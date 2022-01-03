@@ -32,7 +32,7 @@ The final report can be found [here](https://ubc-mds.github.io/census-income-pre
 
 There are two ways to reproduce the project:
 
-### With Docker
+### 1. With Docker
 
 To reproduce the experiment and export the report, please install [Docker](!https://www.docker.com/get-started) in your machine. And then clone this GitHub repository and run the following command at the root directory of this repository:
 
@@ -40,19 +40,31 @@ To reproduce the experiment and export the report, please install [Docker](!http
     git clone https://github.com/UBC-MDS/census-income-prediction.git
     cd census-income-prediction/
     
-    # Pull latest docker image
-    docker pull i234567/census-income-prediction:latest
-
     # Pull the docker image from Docker Hub
     docker pull i234567/census-income-prediction:latest
     
-    # Reproduce the pipeline with Docker
+ ### Non Window Users Command
+    
+    # Reproduce the pipeline with Docker and create the docker container from the image and run this command in the terminal of the docker container
 
-To restore the repository with no generate reports and artifacts, run the following command at the root directory of this repository.
+    docker run --platform linux/amd64 --rm -it -v $(pwd):/home/census-income-prediction/ i234567/census-income-prediction:latest conda run -n census-income --no-capture-output make -C /home/census-income-prediction/ all
+     # remove the flag --platform linux/amd64 for Mac non M1 users.
+       
+To restore the repository with no generated reports and artifacts, run the following command at the root directory of this repository.
 
-    docker run --rm -v $(pwd):/home/census-income-prediction/ i234567/census-income-prediction conda run -n census-income --no-capture-output make -C /home/census-income-prediction/ clean
+    docker run --platform linux/amd64 --rm -it -v $(pwd):/home/census-income-prediction/ i234567/census-income-prediction:latest conda run -n census-income --no-capture-output make -C /home/census-income-prediction/ clean
+    # remove the flag --platform linux/amd64 for Mac non M1 users.
+    
+ ### Windows Users Command
+    # To Reproduce the pipeline with Docker and create the docker container from the image, run this command in the terminal of the docker container
+    
+    docker run --rm -it -v /$(pwd)://home//census-income-prediction i234567/census-income-prediction:latest conda run -n census-income --no-capture-output make -C //home//census-income-prediction all
 
-### Without Docker
+To restore the repository with no generated reports and artifacts, run the following command at the root directory of this repository.
+
+     docker run --rm -it -v /$(pwd)://home//census-income-prediction i234567/census-income-prediction:latest conda run -n census-income --no-capture-output make -C //home//census-income-prediction clean
+
+### 2. Without Docker
 
 To reproduce the model and report, please clone this GitHub repository, install the dependencies or create a virtual enviroment with our enviroment file.
 
@@ -129,6 +141,8 @@ This project requires the following softwares if you do not use Docker:
     -   pandoc>=1.12.3
 
     -   graphviz==2.49.3
+    
+    -   shap>=0.40.0   
 
 -   GNU Make Version 4.2.1
 
